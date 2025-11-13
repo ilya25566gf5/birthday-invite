@@ -318,6 +318,44 @@
       });
     });
   });
+
+    async function createRsvp({ name, surname, going }) {
+      const res = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, surname, going })
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) throw new Error(json.error || 'Create failed');
+      return json.rsvp; // вернётся объект записи, включая id
+    }
+
+  let lastRsvpId = null;
+  
+  async function onMainSubmit() {
+    const name = document.querySelector('.rsvp-input[name="name"]').value;
+    const surname = document.querySelector('.rsvp-input[name="surname"]').value;
+    const going = document.querySelector('#go-yes').checked;
+  
+    const r = await createRsvp({ name, surname, going });
+    lastRsvpId = r.id;
+  }
+
+  async function updatePlusOne({ id, wants, who }) {
+    const res = await fetch('/api/rsvp-plus-one', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id,
+        plus_one_wants: wants,
+        plus_one_name: who || null
+      })
+    });
+    const json = await res.json();
+    if (!res.ok || !json.ok) throw new Error(json.error || 'Update failed');
+    return json.rsvp;
+  }
   </script>
+  
 </body>
 </html>
