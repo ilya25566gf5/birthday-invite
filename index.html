@@ -71,10 +71,15 @@
             <!-- 1. Имя / фамилия -->
             <div class="rsvp-row">
               <input
-                type="text"
-                class="rsvp-input"
-                placeholder="Ваше имя  /  Фамилия"
-              >
+  type="text"
+  class="rsvp-input"
+  id="full_name"
+  name="full_name"
+  placeholder="Ваше имя  /  Фамилия"
+  autocomplete="name"
+  required
+/>
+
             </div>
       
             <!-- 2. Пойдёте? да / нет -->
@@ -134,228 +139,253 @@
 
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector(".rsvp-form");
-    
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const selected = form.querySelector('input[name="go"]:checked')?.value;
-        if (selected === "yes") {
-          showPopupSequence();
-        }
-        if (selected === "no") {
-          // Если кто-то поставит "нет" в основной форме — сразу закрыть всё (на всякий)
-          const ov = document.querySelector('.popup-overlay');
-          if (ov) ov.remove();
-        }
-      });
-    
-      function showPopupSequence(){ createPopup1(); }
-    
-      /* 1) Да/Нет с пандой посередине */
-      function createPopup1(){
-        const {overlay, box} = createPopupBase();
-    
-        const title = document.createElement("h3");
-        box.appendChild(title);
-    
-        // контейнер с половинками
-        const choice = document.createElement("div");
-        choice.className = "popup-choice";
-    
-        // radio + labels
-        const rYes = document.createElement("input");
-        rYes.type = "radio"; rYes.name = "plus1"; rYes.id = "p-yes";
-    
-        const rNo  = document.createElement("input");
-        rNo.type  = "radio"; rNo.name  = "plus1"; rNo.id  = "p-no";
-    
-        const labYes = document.createElement("label");
-        labYes.className = "popup-half left";
-        labYes.htmlFor  = "p-yes";
-        labYes.textContent = "да";
-    
-        const labNo  = document.createElement("label");
-        labNo.className  = "popup-half right";
-        labNo.htmlFor    = "p-no";
-        labNo.textContent = "нет";
-    
-        // панда над швом
-        const panda = document.createElement("img");
-        panda.src = "img/pand.png";
-        panda.className = "popup-panda-bridge";
-    
-        choice.append(rYes, rNo, labYes, labNo, panda);
-        box.appendChild(choice);
-    
-        // логика: да → следующее окно; нет → закрыть overlay
-        labYes.addEventListener("click", () => {
-          overlay.remove();
-          createPopup2();
-        });
-    
-        labNo.addEventListener("click", () => {
-          overlay.remove();               // тёмный фон уходит сразу
-          // ничего дальше не показываем
-        });
-      }
-    
-      /* 2) Поле ввода + Отправить */
-      function createPopup2(){
-        const {overlay, box} = createPopupBase();
-    
-        const title = document.createElement("h3");
-        box.appendChild(title);
-    
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Кого?";
-        input.className = "popup-input";
-        box.appendChild(input);
-    
-        const okBtn = document.createElement("button");
-        okBtn.textContent = "Отправить";
-        okBtn.className = "popup-ok";
-        box.appendChild(okBtn);
-    
-        okBtn.addEventListener("click", () => {
-          overlay.remove();
-          createPopup3("заявка находится на рассмотрении у Си Цзиньпина");
-        });
-      }
-    
-      /* 3) Финальное сообщение + ОК */
-      function createPopup3(message){
-        const {overlay, box} = createPopupBase();
-    
-        const title = document.createElement("h3");
-        box.appendChild(title);
-    
-        const text = document.createElement("p");
-        text.className = "popup-message";
-        text.textContent = message;
-        box.appendChild(text);
-    
-        const ok = document.createElement("button");
-        ok.className = "popup-ok";
-        ok.textContent = "OK";
-        box.appendChild(ok);
-    
-        ok.addEventListener("click", () => overlay.remove());
-      }
-    
-      /* База окна — теперь возвращаем overlay и box, чтобы можно было закрывать */
-      function createPopupBase(){
-        const overlay = document.createElement("div");
-        overlay.className = "popup-overlay";
-    
-        const box = document.createElement("div");
-        box.className = "popup-box";
-    
-        const bg = document.createElement("img");
-        bg.src = "img/pov.png";
-        bg.className = "popup-bg";
-    
-        box.appendChild(bg);
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
-        return {overlay, box};
-      }
-    });
-    </script>
-    
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const regLink = document.querySelector('.nav-left a');
-        const giftsLink = document.querySelector('.nav-right a');
-        const rsvpSection = document.querySelector('.rsvp-section');
-        const giftsSection = document.querySelector('.gifts');
-    
-        // Отступ сверху (под шапку/визуальный воздух)
-        const OFFSET = 140; // подправь по вкусу: 100–180px
-    
-        function smoothScrollTo(el, offset = 0) {
-          // Текущая прокрутка страницы
-          const current = window.pageYOffset || document.documentElement.scrollTop;
-          // Позиция секции относительно вьюпорта
-          const rectTop = el.getBoundingClientRect().top;
-          // Куда едем: текущая прокрутка + относительное смещение - отступ
-          let targetY = current + rectTop - offset;
-    
-          // Безопасные границы
-          const maxY = document.documentElement.scrollHeight - window.innerHeight;
-          if (targetY < 0) targetY = 0;
-          if (targetY > maxY) targetY = maxY;
-    
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-        }
-    
-        regLink.addEventListener('click', (e) => {
-          e.preventDefault();
-          smoothScrollTo(rsvpSection, OFFSET);
-        });
-    
-        giftsLink.addEventListener('click', (e) => {
-          e.preventDefault();
-          // Можно сделать чуть меньше/больше отступ для другого блока
-          smoothScrollTo(giftsSection, OFFSET);
-        });
-      });
-    </script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const regLink = document.querySelector('.nav-left a');
+    // ===== ГЛОБАЛЬНО: id последней записи в таблице rsvp =====
+    let lastRsvpId = null;
   
-    // значение в пикселях, на которое нужно прокрутить
-    const SCROLL_DISTANCE = 600; // можно поменять: 400, 800 и т.д.
+    // --- Разбиваем одну строку "Имя Фамилия" на name / surname ---
+    function splitName(full) {
+      const parts = full.trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return { name: "", surname: "" };
   
-    regLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollBy({
-        top: SCROLL_DISTANCE,
-        left: 0,
-        behavior: 'smooth' // плавная анимация
-      });
-    });
-  });
-
-    async function createRsvp({ name, surname, going }) {
+      const surname = parts.length > 1 ? parts.pop() : "";
+      const name = parts.join(" ");
+  
+      // Подстрахуемся, т.к. surname в базе NOT NULL
+      const fallback = full.trim();
+      return {
+        name: name || fallback,
+        surname: surname || name || fallback
+      };
+    }
+  
+    // --- Сохраняем основной ответ (идёт / не идёт) в /api/rsvp ---
+    async function saveMainRsvp() {
+      const full = document.getElementById('full_name').value;
+      const going = document.getElementById('go-yes').checked;
+      const { name, surname } = splitName(full);
+  
       const res = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, surname, going })
       });
+  
       const json = await res.json();
-      if (!res.ok || !json.ok) throw new Error(json.error || 'Create failed');
-      return json.rsvp; // вернётся объект записи, включая id
+      if (!res.ok || !json.ok) {
+        throw new Error(json.error || 'Create failed');
+      }
+      lastRsvpId = json.rsvp.id;
     }
-
-  let lastRsvpId = null;
   
-  async function onMainSubmit() {
-    const name = document.querySelector('.rsvp-input[name="name"]').value;
-    const surname = document.querySelector('.rsvp-input[name="surname"]').value;
-    const going = document.querySelector('#go-yes').checked;
+    // --- Обновляем информацию про плюс-одного в /api/rsvp-plus-one ---
+    async function updatePlusOne(id, wants, who) {
+      if (!id) return; // на всякий случай
   
-    const r = await createRsvp({ name, surname, going });
-    lastRsvpId = r.id;
-  }
-
-  async function updatePlusOne({ id, wants, who }) {
-    const res = await fetch('/api/rsvp-plus-one', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id,
-        plus_one_wants: wants,
-        plus_one_name: who || null
-      })
+      const res = await fetch('/api/rsvp-plus-one', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id,
+          plus_one_wants: wants,
+          plus_one_name: who || null
+        })
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) {
+        throw new Error(json.error || 'Update failed');
+      }
+      return json.rsvp;
+    }
+  
+    // ===== Всплывающие окна =====
+  
+    function showPopupSequence() {
+      createPopup1();
+    }
+  
+    // Базовая разметка окна
+    function createPopupBase() {
+      const overlay = document.createElement("div");
+      overlay.className = "popup-overlay";
+  
+      const box = document.createElement("div");
+      box.className = "popup-box";
+  
+      const bg = document.createElement("img");
+      bg.src = "img/pov.png";
+      bg.className = "popup-bg";
+  
+      box.appendChild(bg);
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+  
+      return { overlay, box };
+    }
+  
+    // 1) Да/нет по плюс-одному, с пандой
+    function createPopup1() {
+      const { overlay, box } = createPopupBase();
+  
+      const title = document.createElement("h3");
+      title.textContent = ""; // можешь добавить текст при желании
+      box.appendChild(title);
+  
+      const choice = document.createElement("div");
+      choice.className = "popup-choice";
+  
+      const rYes = document.createElement("input");
+      rYes.type = "radio"; rYes.name = "plus1"; rYes.id = "p-yes";
+  
+      const rNo  = document.createElement("input");
+      rNo.type = "radio"; rNo.name = "plus1"; rNo.id = "p-no";
+  
+      const labYes = document.createElement("label");
+      labYes.className = "popup-half left";
+      labYes.htmlFor  = "p-yes";
+      labYes.textContent = "да";
+  
+      const labNo  = document.createElement("label");
+      labNo.className  = "popup-half right";
+      labNo.htmlFor    = "p-no";
+      labNo.textContent = "нет";
+  
+      const panda = document.createElement("img");
+      panda.src = "img/pand.png";
+      panda.className = "popup-panda-bridge";
+  
+      choice.append(rYes, rNo, labYes, labNo, panda);
+      box.appendChild(choice);
+  
+      // да → окно ввода имени
+      labYes.addEventListener("click", () => {
+        overlay.remove();
+        createPopup2();
+      });
+  
+      // нет → просто сохраняем, что плюс-одного нет
+      labNo.addEventListener("click", async () => {
+        overlay.remove();
+        try {
+          await updatePlusOne(lastRsvpId, false, null);
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    }
+  
+    // 2) Ввод "кого?" и отправка
+    function createPopup2() {
+      const { overlay, box } = createPopupBase();
+  
+      const title = document.createElement("h3");
+      title.textContent = ""; // можно добавить надпись
+      box.appendChild(title);
+  
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Кого?";
+      input.className = "popup-input";
+      box.appendChild(input);
+  
+      const okBtn = document.createElement("button");
+      okBtn.textContent = "Отправить";
+      okBtn.className = "popup-ok";
+      box.appendChild(okBtn);
+  
+      okBtn.addEventListener("click", async () => {
+        const who = input.value.trim() || null;
+        overlay.remove();
+  
+        try {
+          await updatePlusOne(lastRsvpId, true, who);
+        } catch (e) {
+          console.error(e);
+        }
+  
+        createPopup3("заявка находится на рассмотрении у Си Цзиньпина");
+      });
+    }
+  
+    // 3) Финальное сообщение
+    function createPopup3(message) {
+      const { overlay, box } = createPopupBase();
+  
+      const title = document.createElement("h3");
+      title.textContent = "";
+      box.appendChild(title);
+  
+      const text = document.createElement("p");
+      text.className = "popup-message";
+      text.textContent = message;
+      box.appendChild(text);
+  
+      const ok = document.createElement("button");
+      ok.className = "popup-ok";
+      ok.textContent = "OK";
+      box.appendChild(ok);
+  
+      ok.addEventListener("click", () => overlay.remove());
+    }
+  
+    // ===== Всё инициализируем, когда DOM готов =====
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector(".rsvp-form");
+  
+      const regLink = document.querySelector('.nav-left a');
+      const giftsLink = document.querySelector('.nav-right a');
+      const rsvpSection = document.querySelector('.rsvp-section');
+      const giftsSection = document.querySelector('.gifts');
+  
+      // --- обработчик отправки формы ---
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+  
+        // Сначала сохраняем в базу
+        try {
+          await saveMainRsvp();
+        } catch (err) {
+          console.error(err);
+          alert("Не удалось сохранить ответ. Попробуйте ещё раз.");
+          return;
+        }
+  
+        // Потом уже показываем попапы / логику по да/нет
+        const selected = form.querySelector('input[name="go"]:checked')?.value;
+        if (selected === "yes") {
+          showPopupSequence();
+        }
+        if (selected === "no") {
+          // На всякий случай удаляем попап, если вдруг есть
+          const ov = document.querySelector('.popup-overlay');
+          if (ov) ov.remove();
+        }
+      });
+  
+      // --- плавный скролл по верхнему меню ---
+      const OFFSET = 140;
+  
+      function smoothScrollTo(el, offset = 0) {
+        const current = window.pageYOffset || document.documentElement.scrollTop;
+        const rectTop = el.getBoundingClientRect().top;
+        let targetY = current + rectTop - offset;
+  
+        const maxY = document.documentElement.scrollHeight - window.innerHeight;
+        if (targetY < 0) targetY = 0;
+        if (targetY > maxY) targetY = maxY;
+  
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }
+  
+      regLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        smoothScrollTo(rsvpSection, OFFSET);
+      });
+  
+      giftsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        smoothScrollTo(giftsSection, OFFSET);
+      });
     });
-    const json = await res.json();
-    if (!res.ok || !json.ok) throw new Error(json.error || 'Update failed');
-    return json.rsvp;
-  }
-  </script>
-  
+  </script>  
 </body>
 </html>
