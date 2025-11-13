@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Приглашение на день рождения</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="background">
+    <!-- 🔹 Верхняя панель -->
+    <header class="header">
+        <div class="nav">
+          <div class="nav-side nav-left">
+            <a href="#" class="nav-item">регистрация</a>
+          </div>
+      
+          <div class="nav-center">
+            <img src="img/flower2.png" alt="Цветок" class="flower">
+          </div>
+      
+          <div class="nav-side nav-right">
+            <a href="#" class="nav-item">подарки</a>
+          </div>
+        </div>
+      </header>
+      
+
+    <section class="hero">
+        <!-- ЛЕВАЯ ПАРА ФОНАРЕЙ -->
+        <div class="lanterns left">
+          <!-- ЗАДНИЙ фонарь — старое изображение -->
+          <img src="img/flashlight.png" alt="фонарь" class="lantern back">
+      
+          <!-- ПЕРЕДНИЙ фонарь — новое изображение с длинной верёвкой -->
+          <div class="lantern-long front">
+            <img src="img/flashlight2.png" alt="фонарь с длинной верёвкой">
+          </div>
+        </div>
+      
+        <!-- ПРАВАЯ ПАРА ФОНАРЕЙ -->
+        <div class="lanterns right">
+          <img src="img/flashlight.png" alt="фонарь" class="lantern back">
+      
+          <div class="lantern-long front">
+            <img src="img/flashlight2.png" alt="фонарь с длинной верёвкой">
+          </div>
+        </div>
+      
+        <img src="img/Chinese_inscription.png" alt="Надпись" class="inscription">
+        <h1>ПРИГЛАШЕНИЕ НА ДЕНЬ РОЖДЕНИЯ</h1>
+      </section>
+      
+      <section class="event-info">
+        <div class="info-card">
+          <img src="img/2.1.png" alt="фон с пандами" class="info-img">
+          <div class="info-text">
+            <p><strong>Дата:</strong> 12 декабря 2025 г.</p>
+            <p><strong>Время:</strong> 09:43</p>
+            <p><strong>Место:</strong> чайная «Красный Журавль», ул. Примерная, 8</p>
+          </div>
+        </div>
+      </section>
+      
+      
+      <section class="rsvp-section">
+        <div class="rsvp-card">
+          <img src="img/1.3.png" alt="фон с бамбуком" class="rsvp-img">
+      
+          <form class="rsvp-form">
+            <!-- 1. Имя / фамилия -->
+            <div class="rsvp-row">
+              <input
+                type="text"
+                class="rsvp-input"
+                placeholder="Ваше имя  /  Фамилия"
+              >
+            </div>
+      
+            <!-- 2. Пойдёте? да / нет -->
+            <div class="rsvp-row rsvp-row-inline">
+              <span class="rsvp-label">Пойдёте?</span>
+      
+              <div class="rsvp-radio-group">
+                <input type="radio" id="go-yes" name="go" value="yes" checked>
+                <label for="go-yes">да</label>
+      
+                <span class="rsvp-slash">/</span>
+      
+                <input type="radio" id="go-no" name="go" value="no">
+                <label for="go-no">нет</label>
+              </div>
+            </div>
+      
+
+            <!-- 3. Кнопка отправить + подпись -->
+            <div class="rsvp-row rsvp-row-inline rsvp-submit-row">
+                <button type="submit" class="rsvp-submit">
+                    отправить
+                </button>
+                <span class="rsvp-deadline">ответить до 12.12.12</span>
+            </div>
+  
+          </form>
+        </div>
+      </section>
+      
+
+    <!-- 🔹 Подарки и вдохновение -->
+<section class="gifts">
+    <h2 class="gifts-title">ПОДАРКИ И ВДОХНОВЕНИЕ</h2>
+  
+    <div class="gifts-grid">
+      <!-- карточка 1 -->
+      <a href="https://docs.google.com/document/d/13-m_k3O88hK18vilrefshgFj-pgBFwkCEOnLMYhdfnQ/edit"
+         class="gift-card" target="_blank" rel="noopener">
+        <img src="img/image1.png" alt="Wishlist 1 — Google" class="gift-img">
+      </a>
+  
+      <!-- карточка 2 -->
+      <a href="https://ohmywishes.ru/users/bc64fb2df839edd614718429"
+         class="gift-card" target="_blank" rel="noopener">
+        <img src="img/image2.png" alt="Wishlist 2 — OhMyWishes" class="gift-img">
+      </a>
+  
+      <!-- карточка 3 -->
+      <a href="https://pin.it/2UCNRshI4"
+         class="gift-card" target="_blank" rel="noopener">
+        <img src="img/image3.png" alt="Mood board Pinterest" class="gift-img">
+      </a>
+    </div>
+  </section>  
+  </div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector(".rsvp-form");
+    
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const selected = form.querySelector('input[name="go"]:checked')?.value;
+        if (selected === "yes") {
+          showPopupSequence();
+        }
+        if (selected === "no") {
+          // Если кто-то поставит "нет" в основной форме — сразу закрыть всё (на всякий)
+          const ov = document.querySelector('.popup-overlay');
+          if (ov) ov.remove();
+        }
+      });
+    
+      function showPopupSequence(){ createPopup1(); }
+    
+      /* 1) Да/Нет с пандой посередине */
+      function createPopup1(){
+        const {overlay, box} = createPopupBase();
+    
+        const title = document.createElement("h3");
+        box.appendChild(title);
+    
+        // контейнер с половинками
+        const choice = document.createElement("div");
+        choice.className = "popup-choice";
+    
+        // radio + labels
+        const rYes = document.createElement("input");
+        rYes.type = "radio"; rYes.name = "plus1"; rYes.id = "p-yes";
+    
+        const rNo  = document.createElement("input");
+        rNo.type  = "radio"; rNo.name  = "plus1"; rNo.id  = "p-no";
+    
+        const labYes = document.createElement("label");
+        labYes.className = "popup-half left";
+        labYes.htmlFor  = "p-yes";
+        labYes.textContent = "да";
+    
+        const labNo  = document.createElement("label");
+        labNo.className  = "popup-half right";
+        labNo.htmlFor    = "p-no";
+        labNo.textContent = "нет";
+    
+        // панда над швом
+        const panda = document.createElement("img");
+        panda.src = "img/pand.png";
+        panda.className = "popup-panda-bridge";
+    
+        choice.append(rYes, rNo, labYes, labNo, panda);
+        box.appendChild(choice);
+    
+        // логика: да → следующее окно; нет → закрыть overlay
+        labYes.addEventListener("click", () => {
+          overlay.remove();
+          createPopup2();
+        });
+    
+        labNo.addEventListener("click", () => {
+          overlay.remove();               // тёмный фон уходит сразу
+          // ничего дальше не показываем
+        });
+      }
+    
+      /* 2) Поле ввода + Отправить */
+      function createPopup2(){
+        const {overlay, box} = createPopupBase();
+    
+        const title = document.createElement("h3");
+        box.appendChild(title);
+    
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Кого?";
+        input.className = "popup-input";
+        box.appendChild(input);
+    
+        const okBtn = document.createElement("button");
+        okBtn.textContent = "Отправить";
+        okBtn.className = "popup-ok";
+        box.appendChild(okBtn);
+    
+        okBtn.addEventListener("click", () => {
+          overlay.remove();
+          createPopup3("заявка находится на рассмотрении у Си Цзиньпина");
+        });
+      }
+    
+      /* 3) Финальное сообщение + ОК */
+      function createPopup3(message){
+        const {overlay, box} = createPopupBase();
+    
+        const title = document.createElement("h3");
+        box.appendChild(title);
+    
+        const text = document.createElement("p");
+        text.className = "popup-message";
+        text.textContent = message;
+        box.appendChild(text);
+    
+        const ok = document.createElement("button");
+        ok.className = "popup-ok";
+        ok.textContent = "OK";
+        box.appendChild(ok);
+    
+        ok.addEventListener("click", () => overlay.remove());
+      }
+    
+      /* База окна — теперь возвращаем overlay и box, чтобы можно было закрывать */
+      function createPopupBase(){
+        const overlay = document.createElement("div");
+        overlay.className = "popup-overlay";
+    
+        const box = document.createElement("div");
+        box.className = "popup-box";
+    
+        const bg = document.createElement("img");
+        bg.src = "img/pov.png";
+        bg.className = "popup-bg";
+    
+        box.appendChild(bg);
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+        return {overlay, box};
+      }
+    });
+    </script>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const regLink = document.querySelector('.nav-left a');
+        const giftsLink = document.querySelector('.nav-right a');
+        const rsvpSection = document.querySelector('.rsvp-section');
+        const giftsSection = document.querySelector('.gifts');
+    
+        // Отступ сверху (под шапку/визуальный воздух)
+        const OFFSET = 140; // подправь по вкусу: 100–180px
+    
+        function smoothScrollTo(el, offset = 0) {
+          // Текущая прокрутка страницы
+          const current = window.pageYOffset || document.documentElement.scrollTop;
+          // Позиция секции относительно вьюпорта
+          const rectTop = el.getBoundingClientRect().top;
+          // Куда едем: текущая прокрутка + относительное смещение - отступ
+          let targetY = current + rectTop - offset;
+    
+          // Безопасные границы
+          const maxY = document.documentElement.scrollHeight - window.innerHeight;
+          if (targetY < 0) targetY = 0;
+          if (targetY > maxY) targetY = maxY;
+    
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+    
+        regLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          smoothScrollTo(rsvpSection, OFFSET);
+        });
+    
+        giftsLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          // Можно сделать чуть меньше/больше отступ для другого блока
+          smoothScrollTo(giftsSection, OFFSET);
+        });
+      });
+    </script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const regLink = document.querySelector('.nav-left a');
+  
+    // значение в пикселях, на которое нужно прокрутить
+    const SCROLL_DISTANCE = 600; // можно поменять: 400, 800 и т.д.
+  
+    regLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollBy({
+        top: SCROLL_DISTANCE,
+        left: 0,
+        behavior: 'smooth' // плавная анимация
+      });
+    });
+  });
+  </script>
+</body>
+</html>
