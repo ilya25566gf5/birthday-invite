@@ -1312,3 +1312,10 @@
   }
 
 
+  @media (max-width: 460px) {
+    .popup-panda-bridge { top: 0px;}
+  }
+
+  @media (max-width: 375px) {
+    .popup-choice { width: 100%; }
+  }
