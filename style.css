@@ -1345,4 +1345,6 @@
     .popup-box .popup-inner {
         width: 100%;
     }
+    .popup-inner {
+        padding-left: 20px;}
 }
