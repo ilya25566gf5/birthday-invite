@@ -1306,6 +1306,8 @@
   }
   
   
-
+  @media (max-width: 2560px) {
+    .popup-panda-bridge { top: 20px;}
+  }
 
 
