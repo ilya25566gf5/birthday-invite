@@ -1065,106 +1065,126 @@
 
 
 
-/* ===== ПОПАП С ПАНДОЙ ===== */
+/* ===== ПОПАП С ПАНДОЙ — ОДИН И ТОТ ЖЕ ДИЗАЙН НА ВСЕХ ЭКРАНАХ ===== */
 
 .popup-overlay {
     position: fixed;
-    inset: 0;                            /* top:0; right:0; bottom:0; left:0 */
-    background: rgba(0, 0, 0, 0.55);     /* затемнение */
-    backdrop-filter: blur(4px);          /* размытие фона */
+    inset: 0;                             /* top/right/bottom/left: 0 */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100000;                     /* поверх всего */
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);           /* размытие фона и на мобилках */
+    z-index: 100000;
   }
   
+  /* Бежевый прямоугольник-основа */
   .popup-box {
     position: relative;
-    width: min(900px, 90vw);
-    max-width: 800px;
-    padding: 24px 36px;
+    width: min(820px, 94vw);              /* сужается на маленьких */
+    padding: 28px 32px 34px;
     box-sizing: border-box;
   }
   
-  /* фон-картинка попапа */
+  /* картинка-бэкграунд карточки */
   .popup-bg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 18px;
+    border-radius: 22px;
     box-shadow: 0 8px 18px rgba(0,0,0,0.45);
     z-index: -1;
   }
   
-  /* текст «хотите кого-то взять…» */
+  /* Заголовок "Хотите кого-то взять с собой?" */
   .popup-box h3 {
-    margin: 0 0 18px;
-    font-size: clamp(20px, 2.3vw, 28px);
-    letter-spacing: 0.05em;
+    margin: 0 0 22px;
+    text-align: center;
+    font-size: clamp(22px, 2.6vw, 30px);
+    letter-spacing: 0.06em;
   }
   
-  /* строка с да / нет */
-  .popup-choice {
+  /* Белая большая плашка внутри */
+  .popup-inner {
     position: relative;
+    margin: 0 auto;
+    width: 100%;
+    background: rgba(255,255,255,0.97);
+    border-radius: 16px;
+    padding: 18px 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  /* Вариант для белой плашки-подписи (сообщение) */
+  .popup-inner--message {
+    justify-content: flex-start;
+  }
+  
+  /* Да / нет в первой карточке */
+  .popup-choice {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0;
-    margin-top: 10px;
+    gap: 40px;
   }
   
-  /* скрываем настоящие радио */
+  /* Скрываем реальные radio */
   .popup-choice input[type="radio"] {
     position: absolute;
     opacity: 0;
     pointer-events: none;
   }
   
-  /* левая и правая половинки */
   .popup-half {
     flex: 1 1 0;
     text-align: center;
-    padding: 14px 0;
     cursor: pointer;
-    font-size: clamp(18px, 2vw, 24px);
+    font-size: clamp(18px, 2.1vw, 24px);
   }
   
-  /* левый / правый край, чтобы по краям выглядело как одна плашка */
-  .popup-half.left  { padding-right: 40px; }
-  .popup-half.right { padding-left: 40px; }
-  
-  /* панда-мостик */
+  /* Панда, "сидящая" на белой плашке */
   .popup-panda-bridge {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
-    bottom: -58px; /* подрегулируешь под свою картинку */
-    width: clamp(80px, 14vw, 130px);
+    top: 50%;
+    transform: translate(-50%, -45%);
+    width: clamp(70px, 10vw, 110px);
   }
   
-  /* поле «кого?» */
+  /* Инпут "Кого?" во второй карточке */
   .popup-input {
-    margin-top: 16px;
     width: 100%;
-    padding: 10px 14px;
-    border-radius: 10px;
     border: none;
     outline: none;
-    font-size: 18px;
+    background: transparent;
+    font-size: clamp(18px, 2vw, 22px);
   }
   
-  /* кнопка ОК / отправить */
+  /* Сообщение в третьем окне */
+  .popup-message {
+    margin: 0;
+    font-size: clamp(18px, 2vw, 22px);
+  }
+  
+  /* Кнопка OK / Отправить — отдельная белая плашка */
   .popup-ok {
-    margin-top: 18px;
-    align-self: flex-end;
-    padding: 10px 24px;
-    border-radius: 10px;
+    margin: 18px auto 0;
+    width: 100%;
+    max-width: 420px;
+    padding: 14px 10px;
+    border-radius: 16px;
     border: none;
     background: #ffffff;
     color: #000;
-    font-size: 18px;
+    font-size: clamp(18px, 2vw, 22px);
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   }
@@ -1172,23 +1192,26 @@
   .popup-ok:hover   { transform: translateY(-1px); }
   .popup-ok:active  { transform: translateY(1px); }
   
-  /* сообщение в третьем окне */
-  .popup-message {
-    margin: 10px 0 0;
-    font-size: 18px;
-  }
-  
-  /* чуть поджимаем на совсем маленьких */
+  /* Адаптация на очень маленьких экранах */
   @media (max-width: 480px) {
     .popup-box {
-      padding: 18px 16px 22px;
+      padding: 22px 18px 26px;
+    }
+  
+    .popup-inner {
+      padding: 14px 18px;
+    }
+  
+    .popup-choice {
+      gap: 24px;
     }
   
     .popup-panda-bridge {
-      bottom: -50px;
-      width: 90px;
+      transform: translate(-50%, -40%);
+      width: 80px;
     }
   }
+  
   
 
 
