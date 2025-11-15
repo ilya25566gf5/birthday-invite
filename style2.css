@@ -1,0 +1,1020 @@
+@font-face {
+    font-family: 'CutoffPro';
+    src: url('text/Cutoff-Pro.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'CutoffPro', sans-serif !important; /* ← применяем ко всему */
+  }
+  
+  body {
+    font-family: 'CutoffPro', sans-serif;
+    background: #200000;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+
+  .background {
+    position: relative;
+    background: url('img/blurred_background.png') no-repeat center center / cover;
+    min-height: 100vh;
+    overflow: hidden;  /* ВАЖНО: обрезаем фонари по краям контейнера */
+  }
+  
+
+h1 {
+    text-align: center;
+    font-size: 64px;
+    letter-spacing: 0.1em;
+    margin-top: 40px;
+    line-height: 1.3;
+    width: 100%;
+    display: block;
+  }
+
+/* ───── Верхняя панель ───── */
+
+.header {
+    text-align: center;
+    padding-top: 20px;
+  }
+  
+  /* красная плашка */
+  .nav{
+    position: relative;
+    display: flex;                  /* вместо grid */
+    align-items: center;
+    justify-content: space-between; /* стороны по краям */
+    background:#7a0000;
+    border-radius:40px;
+    padding:14px 80px;
+    margin:0 auto;
+    box-shadow:0 5px 12px rgba(0,0,0,.6);
+    max-width:900px;
+    z-index:2;
+    overflow:visible;
+  }
+  
+  /* левая/правая половина */
+  .nav-side{
+    flex:1 1 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  
+  /* центр с цветком */
+  .nav-center{
+    position:absolute;
+    left:50%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    transform:translateX(-50%);
+    pointer-events:none; /* клики проходят к ссылкам */
+  }
+  
+  /* текст кнопок */
+  .nav-item {
+    color: #fff;
+    text-decoration: none;
+    font-size: 32px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  
+  /* цветок больше плашки и немного выходит наружу */
+  .flower {
+    height:125px;
+    width:auto;
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,.45));
+    pointer-events:none;
+  }
+
+  .nav-item{
+    color:#fff;
+    text-decoration:none;
+    font-size:32px;
+    letter-spacing:.06em;
+    line-height:1;
+    text-shadow:0 1px 0 rgba(0,0,0,.25);
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .nav-item:hover{ transform:translateY(-1px); opacity:.95; }
+  
+
+/* ───── Фонари по краям ───── */
+
+.lanterns {
+    position: absolute;
+    top: -180px;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+  }
+  
+  /* чуть глубже прячем контейнеры за край экрана */
+  .lanterns.left  { left: -80px; }
+  .lanterns.right { right: -92px; }
+  
+  /* задний фонарь */
+  .lantern {
+    position: relative;
+    width: min(34vw, 520px); /* адаптивная ширина, но не больше 520px */
+    filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.8));
+    transform-origin: top center;
+    z-index: 1;
+  }
+  
+  /* нижний фонарь с длинной верёвкой */
+  .lantern-long {
+    position: relative;
+    width: min(34vw, 520px);   /* такой же размер, как у заднего */
+    height: min(34vw, 520px);  /* квадратное "окно" для обрезки верёвки */
+    overflow: hidden;          /* обрезаем лишнюю верёвку сверху */
+    filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.8));
+    z-index: 2;
+    margin-top: -55%;          /* перекрываем задний фонарь */
+  }
+  
+  /* внутренняя картинка фонаря */
+  .lantern-long img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+  }
+  
+  /* зеркальный сдвиг внутрь */
+  .lanterns.left  .lantern-long { margin-left: 6vw; }
+  .lanterns.right .lantern-long { margin-left: -5vw; }  /* было -6vw */
+  
+  
+  /* ─ адаптив (подправляем только вертикальное перекрытие) ─ */
+
+/* ───── Анимация фонарей ───── */
+
+@keyframes lanternFloatBack {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(10px); /* немного вниз */
+    }
+  }
+  
+  @keyframes lanternFloatFront {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px); /* немного вверх, чтобы было живее */
+    }
+  }
+  
+  /* применяем анимации */
+  .lantern {
+    animation: lanternFloatBack 6s ease-in-out infinite;
+  }
+  
+  .lantern-long {
+    animation: lanternFloatFront 7s ease-in-out infinite;
+  }
+
+
+  
+  
+/* ───── Китайская надпись  ───── */
+
+.inscription {
+    display: block;             /* превращаем img в блочный элемент */
+    margin: 40px auto 0;        /* auto по бокам центрирует по горизонтали */
+    width: 260px;               /* базовый размер */
+    filter: drop-shadow(0 5px 8px rgba(0,0,0,0.7));
+  }
+
+  .event-info {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+  }
+  
+  /* Карточка */
+  .info-card {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    overflow: hidden;
+    border-radius: 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+  
+  /* Само изображение */
+  .info-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* обрезает, а не сжимает */
+    border-radius: 24px;
+  }
+  
+  /* Текст поверх изображения */
+  .info-text {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    border-radius: 18px;
+    padding: 0px 30px;
+    max-width: 55%;
+    font-size: 24px;
+    line-height: 1.5;
+    color: #000;            /* ← ЧЁРНЫЙ ТЕКСТ */
+  }
+  
+  .info-text p + p {
+    margin-top: 6px;
+  }
+  
+  /* Текст поверх изображения */
+.info-text {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* равномерное распределение строк */
+    height: calc(100% - 80px); /* чтобы распределить по высоте карточки */
+    max-width: 55%;
+    font-size: 24px;
+    line-height: 1.4;
+    color: #000;
+  }
+  
+  /* каждая строка — отдельная «полоска» */
+  .info-text p {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 0;
+    width: fit-content;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  
+
+/* форма поверх картинки */
+.rsvp-form {
+    position: absolute;
+    top: 30px;
+    bottom: 30px;
+    left: 90px;
+    right: 120px;          /* ОТСТУП СПРАВА 120px */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: #000;
+    font-size: 24px;
+  }
+  
+  /* общая стилистика “табличек” */
+  .rsvp-row,
+  .rsvp-row-inline {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 8px;                /* радиус 8px */
+    height: 59px;                      /* высота 59px */
+    padding: 0 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+  }
+  
+  /* ширины по макету */
+  .rsvp-row {                 /* Ваше имя / Фамилия */
+    width: 653px;
+  }
+  
+  .rsvp-row-inline {          /* Пойдёте? да / нет */
+    width: 571px;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+  
+  /* поле ввода как текст в табличке */
+  .rsvp-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 24px;
+    color: #000;
+    caret-color: #000;
+  }
+  
+  .rsvp-input::placeholder {
+    color: #000;
+  }
+  
+  /* подпись “Пойдёте?” */
+  .rsvp-label {
+    white-space: nowrap;
+  }
+  
+  /* да / нет */
+  .rsvp-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+  }
+  
+  /* сами радио прячем */
+  .rsvp-radio-group input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  /* да/нет — кликабельный текст */
+  .rsvp-radio-group label {
+    cursor: pointer;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+  }
+  
+  /* подчёркивание выбранного */
+  .rsvp-radio-group input[type="radio"]:checked + label {
+    border-bottom-color: #000;
+  }
+  
+  .rsvp-slash {
+    opacity: 0.7;
+  }
+  
+  /* КНОПКА ОТПРАВИТЬ: 268x59, радиус 8 */
+  .rsvp-submit {
+    margin-top: 4px;
+    width: 268px;
+    height: 59px;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+    color: black;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: left;        
+    padding-left: 14px;   
+  }
+  
+  .rsvp-submit:hover {
+    transform: translateY(-1px);
+  }
+  
+  .rsvp-submit:active {
+    transform: translateY(1px);
+  }
+
+
+/* секция по центру страницы под первой карточкой */
+.rsvp-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  /* сама карточка с бамбуком */
+  .rsvp-card {
+    position: relative;           /* ВАЖНО: чтобы .rsvp-form была поверх картинки */
+    width: 90%;
+    max-width: 1200px;
+    overflow: hidden;
+    border-radius: 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+  
+  /* фоновое изображение 1.1 */
+  .rsvp-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 24px;
+  }
+  
+  /* строка с кнопкой и подписью */
+.rsvp-submit-row {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* расстояние между кнопкой и надписью */
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+    width: fit-content;
+  }
+  
+  /* кнопка */
+  .rsvp-submit {
+    margin-top: 4px;
+    width: 268px;
+    height: 59px;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+    color: #000000;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: left;         /* выравнивание текста по левому краю */
+    padding-left: 14px;       /* отступ текста 14px */
+    line-height: 59px;        /* выравнивание по вертикали */
+    font-family: 'CutoffPro', sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* подпись справа */
+  .rsvp-deadline {
+    font-family: 'CutoffPro', sans-serif;
+    font-size: 24px;
+    color: #000;
+    white-space: nowrap;
+    margin-top: 6px;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  /* ───── Подарки и вдохновение ───── */
+
+.gifts {
+    max-width: 1200px;
+    margin: 120px auto 80px;
+    padding: 0 20px;
+    text-align: center;
+  }
+  
+  .gifts-title {
+    font-size: 56px;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+  }
+  
+  /* контейнер с тремя карточками */
+  .gifts-grid {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: nowrap;
+  }
+  
+  /* сама карточка-ссылка */
+  .gift-card {
+    display: block;
+    flex: 1 1 0;
+    max-width: 360px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  /* картинка внутри карточки */
+  .gift-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;  /* обрезает по краям, не сжимает */
+  }
+  
+  /* лёгкий hover */
+  .gift-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+  }
+
+/* ───── Всплывающие окна ───── */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-box {
+  position: relative;
+  width: 640px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #000;
+  font-family: 'CutoffPro', sans-serif;
+}
+
+.popup-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  z-index: 0;
+}
+
+.popup-box h3 {
+  position: relative;
+  z-index: 2;
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+.popup-panda {
+  position: relative;
+  z-index: 2;
+  width: 70px;
+  height: auto;
+  margin: 10px 0;
+}
+
+.popup-buttons {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+}
+
+.popup-buttons button {
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 28px;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.popup-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.popup-input {
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+  width: 70%;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.popup-ok {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 30px;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.popup-ok:hover {
+  transform: scale(1.05);
+}
+
+.popup-message {
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+/* ───── Новое оформление для первого окна (панда между половинками) ───── */
+/* ─── Первое окно: полоса Да/Нет с пандой ─── */
+
+.popup-choice{
+  position:relative;
+  width:571px;              /* по макету */
+  height:59px;              /* по макету */
+  display:flex;
+  z-index:2;
+  margin:12px auto 0;
+}
+
+/* скрываем реальные радиокнопки */
+.popup-choice input[type="radio"]{
+  position:absolute; opacity:0; pointer-events:none;
+}
+
+/* половинки */
+.popup-half{
+  flex:1 1 0;
+  background:#fff;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.25);
+  cursor:pointer;
+  user-select:none;
+  font-size:22px;           /* видимый текст "да"/"нет" */
+  color:#000;
+}
+.popup-half.left{  border-radius:8px 0 0 8px; }
+.popup-half.right{ border-radius:0 8px 8px 0; }
+
+
+.popup-half:hover{ filter:brightness(.98); }
+
+/* панда поверх шва */
+.popup-panda-bridge{
+  position:absolute;
+  left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  height:auto;              /* больше, как просил */
+  height:auto;
+  pointer-events:none;      /* клики проходят в половинки */
+  z-index:3;
+}
+/* ─── Боковой бамбук ─── */
+.background {
+  position: relative;
+  overflow: hidden;           
+}
+
+/* общие настройки фона-бамбука */
+.background::before,
+.background::after {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 100%;
+  background: url('img/ke.png') no-repeat center top;
+  background-size: cover;
+  z-index: 0;                  /* ← ниже контента */
+  pointer-events: none;        /* ← не блокирует клики по карточкам/тексту */
+  opacity: 1;
+}
+
+/* левая сторона — чутка выше и ПОДРЕЗАЕМ СПРАВА */
+.background::before {
+  left: 0;
+  top: 0;
+  transform: none;
+  /* Сколько срезать по правому краю (подвинь значение под вкус) */
+  clip-path: inset(0 260px 0 0);     /* обрезаем 260px справа */
+}
+
+/* правая сторона — ниже, зеркалим и ПОДРЕЗАЕМ СЛЕВА */
+.background::after {
+  right: 0;
+  top: 80px;
+  transform: scaleX(-1);
+  clip-path: inset(0 0 0 0px);     /* обрезаем 260px слева */
+}
+
+/* гарантируем, что секции над фоном */
+.event-info,
+.rsvp-section,
+.gifts,
+.gifts-title {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+
+
+
+
+
+@media (max-width:1024px){
+  h1 {font-size: 48px; 
+    margin: auto;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-top: 40px;
+    width: 80%;
+    display: block;
+}
+.nav-item {
+  font-size: 24px;}
+
+  .info-text {
+    top: 20px;
+    max-width: 75%;}
+
+    .rsvp-input {
+      font-size: 24px;
+    }
+    .rsvp-form {
+      font-size: 24px;
+      top: 20px;
+      max-width: 75%;
+      gap: 7px;
+    }
+    .rsvp-submit {
+      margin-top: 0px;
+      height: 52px;
+    }
+    .gifts-title {
+      font-size: 48px
+    }
+    .rsvp-submit {
+      line-height: 0px;
+    }
+    .rsvp-deadline {
+      margin-top: 0px;
+    }
+}
+
+
+@media (max-width:768px){
+h1 {
+  text-align: center;
+  font-size: 36px;
+  width: 50%;
+  margin: auto;
+  position: relative;
+  z-index: 4;
+}
+  .info-text { top: 0px;}
+  .info-img {display: block; width: 110%;}
+  .rsvp-img {display: block; width: 110%;}
+  .rsvp-form, .rsvp-input, .rsvp-submit {font-size: 16px;}
+  .info-text p, .rsvp-row, .rsvp-row-inline{border-radius: 4px;}
+  .rsvp-row, .rsvp-row-inline {height: 38px;}
+  .rsvp-form {
+    left: 35px;
+    top: 15px;}
+}
+
+
+@media (max-width: 1024px) {
+  .flower {
+    top: -45px;
+    height: 130px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    grid-template-columns: 1fr 0.6fr 1fr; /* цветок меньше места занимает */
+    padding: 10px 36px;
+    max-width: 90%;
+  }
+
+  .flower {
+    top: -30px;
+    height: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    grid-template-columns: 1fr 0.4fr 1fr;
+    padding: 8px 24px;
+  }
+
+  .flower {
+    top: -24px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .lanterns {
+    top: -140px;
+  }
+  .lantern-long {
+    margin-top: -50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .lanterns {
+    top: -120px;
+  }
+  .lantern-long {
+    margin-top: -45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .lanterns {
+    top: -100px;
+  }
+  .lantern-long {
+    margin-top: -40%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .inscription {
+    width: 220px;
+    margin-top: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .inscription {
+    width: 180px;
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inscription {
+    width: 150px;
+    margin-top: 28px;
+  }
+}
+
+ /* адаптив */
+ @media (max-width: 768px) {
+  .info-text {
+    top: 0px;
+    left: 20px;
+    max-width: calc(100% - 40px);
+    padding: 20px;
+    font-size: 16px;
+  }
+
+  .info-text p {
+    border-radius: 10px;
+    padding: 8px 10px;
+  }
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .info-text {
+    top: 0px;
+    left: 20px;
+    max-width: calc(100% - 40px);
+    padding: 16px 18px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .rsvp-form {
+    right: 40px;              
+  }
+
+  .rsvp-row,
+  .rsvp-row-inline {
+    width: 100%;    
+    padding: 10px 14px;           
+  }
+}
+
+@media (max-width: 768px) {
+  .rsvp-form {
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;               
+    font-size: 16px;
+  }
+
+  .rsvp-row,
+  .rsvp-row-inline {
+    width: 100%;
+    height: 52px;
+  }
+
+  .rsvp-row-inline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .rsvp-submit {
+    width: auto;
+    padding: 8px 30px;
+    height: auto;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rsvp-form {
+    top: 16px;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    font-size: 14px;
+  }
+
+  .rsvp-row,
+  .rsvp-row-inline {
+    height: auto;
+    min-height: 46px;
+  }
+
+  .rsvp-input {
+    font-size: 14px;
+  }
+
+  .rsvp-radio-group {
+    font-size: 14px;
+  }
+
+  .rsvp-submit {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .gifts-title {
+    font-size: 42px;
+  }
+
+  .gifts-grid {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .gift-card {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gifts {
+    margin-top: 80px;
+  }
+
+  .gifts-title {
+    font-size: 34px;
+    letter-spacing: 0.06em;
+  }
+
+  .gifts-grid {
+    flex-direction: column;      /* на мобилке в столбик */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .gift-card {
+    width: 80%;
+    max-width: 360px;
+  }
+}
+
+/* адаптив */
+@media (max-width: 700px) {
+  .popup-box {
+    width: 90%;
+    height: auto;
+    padding: 30px 0;
+  }
+
+  .popup-buttons {
+    gap: 40px;
+  }
+
+  .popup-input {
+    width: 80%;
+  }
+}
+
+/* на узких экранах чуть меньше */
+@media (max-width:700px){
+  .popup-choice{ width:90vw; max-width:571px; }
+  .popup-panda-bridge{ width:92px; }
+}
+
+
+
+
