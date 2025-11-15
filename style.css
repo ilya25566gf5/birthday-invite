@@ -1137,7 +1137,8 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;             /* или contain, если не хочешь обрезания */
+    object-fit: contain;   /* было cover */
+    background-color: #f3ebdd; /* на всякий, чтобы пустые поля были бежевые */            /* или contain, если не хочешь обрезания */
     border-radius: 22px;
     box-shadow: 0 8px 18px rgba(0,0,0,0.45);
     z-index: -1;
