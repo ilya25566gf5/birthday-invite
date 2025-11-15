@@ -1319,15 +1319,26 @@
   @media (max-width: 768px) {
     .popup-choice { width: 100%; }
     .popup-box .popup-inner {
+        width: 60%; }
+
+    .popup-box .popup-inner {
+            justify-content: flex-start;
+            padding-left: 20px;}
+  }
+
+  @media (max-width:  425px) {
+    .popup-choice { width: 100%; }
+    .popup-box .popup-inner {
         width: 100%; }
 
     .popup-box .popup-inner {
             justify-content: flex-start;
             padding-left: 20px;}
-
-
   }
 
+
+
+ 
 
   @media (max-width: 460px) {
     .popup-panda-bridge { top: 0px;}
