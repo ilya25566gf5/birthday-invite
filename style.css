@@ -1164,11 +1164,12 @@
 
   /* Белая длинная полоска внутри бежевой карточки */
   .popup-box .popup-inner {
+    padding-left: 10px;
     width: 100%;
     max-width: 100%;
     height: auto;
     background: #ffffff;
-    border-radius: 18px;
+    border-radius: 8px;
     padding: 0;
     box-shadow: 0 4px 10px rgba(0,0,0,0.22);
     overflow: visible;
@@ -1241,7 +1242,7 @@
     width: 100%;
     max-width: 420px;
     /* padding: 14px 10px; */
-    border-radius: 16px;
+    border-radius: 8px;
     border: none;
     background: #ffffff;
     color: #000;
