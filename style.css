@@ -1335,6 +1335,8 @@
 
   @media (max-width: 375px) {
     .popup-choice { width: 100%; }
+    .popup-bg {
+        border-radius: 8px;}
   }
 
   @media (max-width: 375px) {
