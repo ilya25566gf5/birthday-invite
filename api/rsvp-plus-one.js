@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return res.status(405).json({ ok: false, error: 'Method Not Allowed' });
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   if (!SUPABASE_URL || !SERVICE_ROLE) {
     console.error('Missing env', { hasUrl: !!SUPABASE_URL, hasKey: !!SERVICE_ROLE });
-    return res.status(500).json({ error: 'Server misconfigured: missing env' });
+    return res.status(500).json({ ok: false, error: 'Server misconfigured: missing env' });
   }
 
   const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
@@ -25,42 +25,49 @@ export default async function handler(req, res) {
   try {
     const { id, plus_one_wants, plus_one_name } = req.body || {};
 
-    // допускаем и строку, и число, приводим к числу
+    // допускаем и число, и строку
     const parsedId = Number(id);
 
     if (!Number.isFinite(parsedId) || typeof plus_one_wants !== 'boolean') {
-      console.error('Invalid payload in /rsvp-plus-one', { id, plus_one_wants, plus_one_name });
-      return res.status(400).json({ error: 'Invalid payload' });
+      console.error('Invalid payload in /rsvp-plus-one', {
+        id,
+        parsedId,
+        plus_one_wants,
+        plus_one_name,
+      });
+      return res.status(400).json({ ok: false, error: 'Invalid payload' });
     }
 
     const update = {
       plus_one_wants,
       plus_one_name: plus_one_wants
         ? (typeof plus_one_name === 'string' ? plus_one_name.trim() : null)
-        : null
+        : null,
     };
 
     const { data, error } = await supabase
       .from('rsvp')
       .update(update)
       .eq('id', parsedId)
-      .select(); // без .single()
+      .select();
 
     if (error) {
       console.error('DB update error in /rsvp-plus-one', error);
-      return res.status(500).json({ error: 'DB update failed' });
+      return res.status(500).json({
+        ok: false,
+        error: error.message || 'DB update failed',
+        details: error,         // ← чтобы увидеть код/детали
+      });
     }
 
     if (!data || data.length === 0) {
-      // id не нашёлся
       console.error('No row found for id in /rsvp-plus-one', parsedId);
-      return res.status(404).json({ error: 'RSVP not found' });
+      return res.status(404).json({ ok: false, error: 'RSVP not found' });
     }
 
     return res.status(200).json({ ok: true, rsvp: data[0] });
   } catch (e) {
     console.error('Unexpected error in /rsvp-plus-one', e);
-    return res.status(500).json({ error: 'Unexpected server error' });
+    return res.status(500).json({ ok: false, error: 'Unexpected server error' });
   }
 }
-
