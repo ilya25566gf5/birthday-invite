@@ -2,6 +2,7 @@
 import { createClient } from '@supabase/supabase-js';
 
 export default async function handler(req, res) {
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -12,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY; // <-- тоже
+  const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!SUPABASE_URL || !SERVICE_ROLE) {
     console.error('Missing env', { hasUrl: !!SUPABASE_URL, hasKey: !!SERVICE_ROLE });
@@ -24,7 +25,11 @@ export default async function handler(req, res) {
   try {
     const { id, plus_one_wants, plus_one_name } = req.body || {};
 
-    if (typeof id !== 'number' || typeof plus_one_wants !== 'boolean') {
+    // допускаем и строку, и число, приводим к числу
+    const parsedId = Number(id);
+
+    if (!Number.isFinite(parsedId) || typeof plus_one_wants !== 'boolean') {
+      console.error('Invalid payload in /rsvp-plus-one', { id, plus_one_wants, plus_one_name });
       return res.status(400).json({ error: 'Invalid payload' });
     }
 
@@ -38,18 +43,24 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from('rsvp')
       .update(update)
-      .eq('id', id)
-      .select()
-      .single();
+      .eq('id', parsedId)
+      .select(); // без .single()
 
     if (error) {
-      console.error('DB update error', error);
+      console.error('DB update error in /rsvp-plus-one', error);
       return res.status(500).json({ error: 'DB update failed' });
     }
 
-    return res.status(200).json({ ok: true, rsvp: data });
+    if (!data || data.length === 0) {
+      // id не нашёлся
+      console.error('No row found for id in /rsvp-plus-one', parsedId);
+      return res.status(404).json({ error: 'RSVP not found' });
+    }
+
+    return res.status(200).json({ ok: true, rsvp: data[0] });
   } catch (e) {
-    console.error('Unexpected', e);
+    console.error('Unexpected error in /rsvp-plus-one', e);
     return res.status(500).json({ error: 'Unexpected server error' });
   }
 }
+
