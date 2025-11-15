@@ -1222,7 +1222,6 @@
   
   /* Инпут "Кого?" во второй карточке */
   .popup-input {
-    width: 100%;
     border: none;
     outline: none;
     background: transparent;
@@ -1237,10 +1236,11 @@
   
   /* Кнопка OK / Отправить — отдельная белая плашка */
   .popup-ok {
-    margin: 18px auto 0;
+    height: 25px;
+    margin: 8px auto 0;
     width: 100%;
     max-width: 420px;
-    padding: 14px 10px;
+    /* padding: 14px 10px; */
     border-radius: 16px;
     border: none;
     background: #ffffff;
@@ -1286,7 +1286,7 @@
   /* Адаптация на очень маленьких экранах */
   @media (max-width: 480px) {
     .popup-box {
-      padding: 22px 18px 26px;
+        padding: 50px 18px 26px;
     }
   
     .popup-inner {
@@ -1298,6 +1298,7 @@
     }
   
     .popup-panda-bridge {
+        margin-top: 23px;
       transform: translate(-50%, -40%);
       width: 80px;
     }
