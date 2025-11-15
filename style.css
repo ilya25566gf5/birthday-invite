@@ -1122,28 +1122,64 @@
     justify-content: flex-start;
   }
   
-  /* Да / нет в первой карточке */
+
+  /* Белая длинная полоска внутри бежевой карточки */
+.popup-box .popup-inner {
+    position: relative;
+    margin: 0 auto;
+    width: min(820px, 94vw);     /* ширина как у других блоков */
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 0;                  /* без внутренних отступов, полоса цельная */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.22);
+    overflow: visible;           /* чтобы панда могла вылезти наверх */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  /* Внутри полосы: "да  [панда]  нет" */
   .popup-choice {
+    position: relative;
     width: 100%;
+    height: 59px;                /* как у остальных белых блоков */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 40px;
+    padding: 0 40px;             /* отступы от краёв */
+    box-sizing: border-box;
   }
   
-  /* Скрываем реальные radio */
+  /* Реальные radio спрятаны */
   .popup-choice input[type="radio"] {
     position: absolute;
     opacity: 0;
     pointer-events: none;
   }
   
+  /* Текст "да" / "нет" по краям полоски */
   .popup-half {
-    flex: 1 1 0;
-    text-align: center;
-    cursor: pointer;
+    flex: 0 0 auto;
     font-size: clamp(18px, 2.1vw, 24px);
+    color: #000;
+    cursor: pointer;
+    font-weight: 400;
   }
+  
+  /* Панда цепляется за середину полоски */
+  .popup-panda-bridge {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -35%);  /* чуть над полоской */
+    width: clamp(70px, 9vw, 100px);    /* размер */
+    pointer-events: none;
+  }
+  
+
+  
+
   
   /* Инпут "Кого?" во второй карточке */
   .popup-input {
@@ -1184,14 +1220,7 @@
   color: #000;
 }
 
-/* белая длинная полоска внутри бежевой карточки */
-.popup-box .popup-inner {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 18px 32px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.22);
-  overflow: visible;                 /* чтобы панда не обрезалась */
-}
+
 
 /* да / нет — обычный чёрный текст */
 .popup-half {
@@ -1210,13 +1239,6 @@
   color: #000;
 }
 
-/* панда меньше и «сидит» на полоске, не обрезается */
-.popup-panda-bridge {
-  width: clamp(60px, 8vw, 90px);      /* уменьшаем */
-  top: 0;                             /* привязываем к верхнему краю полоски */
-  transform: translate(-50%, -35%);   /* чуть выше центра */
-  pointer-events: none;
-}
 
   
   .popup-ok:hover   { transform: translateY(-1px); }
