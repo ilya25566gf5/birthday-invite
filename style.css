@@ -1331,6 +1331,13 @@
     .popup-box .popup-inner {
         width: 100%; }
 
+        .popup-ok {
+            height: 35px;
+            margin: 8px auto 0;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 4px;}
+
     .popup-box .popup-inner {
             justify-content: flex-start;
             padding-left: 20px;}
