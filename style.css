@@ -1022,22 +1022,37 @@
   .confetti-piece {
     position: fixed;
     top: -10px;
+    opacity: 0.85;
     border-radius: 2px;
-    opacity: 0.9;
-    animation: fall 2s linear forwards;
-    z-index: 9999;
+    z-index: 99999;
+    pointer-events: none;
+
+    /* Чтобы каждая частичка падала по разной траектории */
+    animation-name: confetti-fall, confetti-sway;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: 1, infinite;
 }
 
-@keyframes fall {
+@keyframes confetti-fall {
     0% {
         transform: translateY(0) rotate(0deg);
         opacity: 1;
     }
     100% {
-        transform: translateY(110vh) rotate(360deg);
+        transform: translateY(110vh) rotate(720deg);
         opacity: 0;
     }
 }
+
+/* Колебания влево-вправо */
+@keyframes confetti-sway {
+    0% { margin-left: 0; }
+    25% { margin-left: -20px; }
+    50% { margin-left: 10px; }
+    75% { margin-left: -15px; }
+    100% { margin-left: 0; }
+}
+
 
     
   

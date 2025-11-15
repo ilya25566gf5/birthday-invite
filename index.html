@@ -392,27 +392,42 @@
 
 <script>
   function launchConfetti() {
-      const colors = ["#ff3b3b", "#ffd93b", "#3bff7a", "#3bbdff", "#ff3bf5"];
-  
-      for (let i = 0; i < 120; i++) {
-          const confetti = document.createElement("div");
-          confetti.classList.add("confetti-piece");
-  
-          const size = Math.random() * 8 + 4;
-          const left = Math.random() * 100;
-          const rotate = Math.random() * 360;
-  
-          confetti.style.width = size + "px";
-          confetti.style.height = size * 0.4 + "px";
-          confetti.style.left = left + "vw";
-          confetti.style.transform = `rotate(${rotate}deg)`;
-          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-  
-          document.body.appendChild(confetti);
-  
-          setTimeout(() => confetti.remove(), 2000);
-      }
-  }
+    const colors = ["#ff3b3b", "#ffd93b", "#ff7a3b", "#ffef3b", "#ff4f4f"]; // китайская палитра
+
+    const amount = 180; // больше конфетти
+
+    for (let i = 0; i < amount; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti-piece");
+
+        // случайный размер
+        const size = Math.random() * 10 + 6; 
+        confetti.style.width = size + "px";
+        confetti.style.height = (size * (0.4 + Math.random() * 0.4)) + "px";
+
+        // стартовая позиция в пределах ширины экрана
+        confetti.style.left = Math.random() * 100 + "vw";
+
+        // разные углы
+        const rotate = Math.random() * 360;
+        confetti.style.transform = `rotate(${rotate}deg)`;
+
+        // цвет
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+        // задержка падения (чтобы не падали одной линией)
+        confetti.style.animationDelay = (Math.random() * 0.5) + "s";
+
+        // разная скорость (масса)
+        confetti.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+
+        document.body.appendChild(confetti);
+
+        // удаляем
+        setTimeout(() => confetti.remove(), 3000);
+    }
+}
+
   </script>
 
 
