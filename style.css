@@ -22,7 +22,7 @@
   @media (max-width: 600px) {
     :root {
       --popup-w: 340px;
-      --popup-h: 260px;
+      --popup-h: 160px;
     }
   }
   
