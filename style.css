@@ -2,6 +2,33 @@
     --container-max: 1200px;
     --page-padding: clamp(16px, 4vw, 40px);
   }
+
+
+/* ---- размеры попапа по умолчанию (десктоп) ---- */
+:root {
+    --popup-w: 820px;   /* ширина pov.png */
+    --popup-h: 320px;   /* высота pov.png */
+  }
+  
+  /* планшеты */
+  @media (max-width: 1024px) {
+    :root {
+      --popup-w: 700px;
+      --popup-h: 300px;
+    }
+  }
+  
+  /* телефоны */
+  @media (max-width: 600px) {
+    :root {
+      --popup-w: 340px;
+      --popup-h: 260px;
+    }
+  }
+  
+
+
+
   
   @font-face {
     font-family: 'CutoffPro';
@@ -1089,22 +1116,28 @@
   /* Бежевый прямоугольник-основа */
   .popup-box {
     position: relative;
-    /* width: min(820px, 94vw);             */
-    padding: 28px 32px 34px;
+    width: var(--popup-w);
+    height: var(--popup-h);
+    padding: 0;                    /* чтобы размер задавался только переменными */
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
-  /* картинка-бэкграунд карточки */
+  /* картинка-бэкграунд строго по размеру попапа */
   .popup-bg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover;             /* или contain, если не хочешь обрезания */
     border-radius: 22px;
     box-shadow: 0 8px 18px rgba(0,0,0,0.45);
     z-index: -1;
   }
+  
   
   /* Заголовок "Хотите кого-то взять с собой?" */
   .popup-box h3 {
@@ -1124,15 +1157,15 @@
   
 
   /* Белая длинная полоска внутри бежевой карточки */
-.popup-box .popup-inner {
-    position: relative;
-    margin: 0 auto;
-    width: min(820px, 94vw);     /* ширина как у других блоков */
+  .popup-box .popup-inner {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
     background: #ffffff;
     border-radius: 18px;
-    padding: 0;                  /* без внутренних отступов, полоса цельная */
+    padding: 0;
     box-shadow: 0 4px 10px rgba(0,0,0,0.22);
-    overflow: visible;           /* чтобы панда могла вылезти наверх */
+    overflow: visible;
     display: flex;
     justify-content: center;
     align-items: center;
