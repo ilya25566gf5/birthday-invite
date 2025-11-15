@@ -1341,7 +1341,7 @@
     }
 }
 @media (max-width: 768px) {
-     .popup-inner {width: 60%;}}
+     .popup-inner {width: 100%;}}
 
 
 @media (max-width: 375px) {
