@@ -99,27 +99,49 @@
     z-index: 2;
   }
   
-  .nav-side {
-    flex: 1 1 0;
+
+
+
+  
+  .nav {
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 12px;                /* расстояние текст–иконка–текст */
+    height: 25px;             /* ← ЖЁСТКАЯ ВЫСОТА ШАПКИ */
+    padding: 0 24px;          /* только по бокам, без вертикального */
+    margin: 0 auto;
+    background: #7a0000;
+    border-radius: 25px;
+    box-shadow: 0 5px 12px rgba(0,0,0,.6);
+    max-width: min(900px, 100% - 2 * var(--page-padding));
   }
   
-  .nav-center {
-    position: absolute;
-    left: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    transform: translateX(-50%);
-    pointer-events: none;
+  
+  .nav-item {
+    color: #fff;
+    font-size: clamp(18px, 3vw, 28px);
+    letter-spacing: .05em;
+    text-decoration: none;
+    white-space: nowrap;
   }
+  
+  .nav-center-icon {
+    width: clamp(40px, 10vw, 70px);
+    height: auto;
+    display: block;
+  }
+  
+
+
+
+
   
   .nav-item {
     color: #fff;
     text-decoration: none;
-    font-size: clamp(18px, 2.4vw, 32px);
+    font-size: clamp(12px, 2.4vw, 32px);
     letter-spacing: .06em;
     line-height: 1;
     text-shadow: 0 1px 0 rgba(0,0,0,.25);
@@ -830,7 +852,7 @@
   .rsvp-row-inline {
     width: 100%;
     border-radius: 4px;
-    padding: 8px 10px;
+    padding: 13px 10px;
     min-height: 46px;
     background: rgba(255,255,255,0.96);
     box-shadow: 0 4px 10px rgba(0,0,0,0.25);
@@ -918,3 +940,110 @@
     }
   }
   
+
+  @media (max-width: 2700px) {
+    .nav {height: 55px; }
+    .rsvp-row-inline {
+        gap: 21px;}
+  }
+
+  @media (max-width: 768px) {
+    .nav {  height: 43px;
+        margin-left: 84px;
+        margin-right: 84px; }
+  }
+  @media (max-width: 768px) {
+    .nav {
+        height: 35px;
+        margin-left: 44px;
+        margin-right: 44px; }
+  }
+  @media (max-width: 375px) {
+    .nav {
+        height: 29px;
+        padding: 2px 24px;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    .flower {
+        height: clamp(20px, 12vw, 90px);}
+
+        .lanterns.left {
+            left: -5vw;
+        }
+        .lanterns {
+            top: -2vh;
+        }
+        .lanterns.right {
+            right: -5vw;
+        }
+        .rsvp-label {
+        padding: 5px 0 0;}
+        .rsvp-radio-group {
+        padding: 5px 0 0;}
+
+        .background::before, .background::after {
+        width: 360px;}
+
+}
+
+
+.background {
+    animation: bgPulse 8s ease-in-out infinite;
+  }
+  
+  @keyframes bgPulse {
+    0%, 100% { filter: brightness(1); }
+    50%      { filter: brightness(1.05); }
+  }
+
+  .background {
+    background-position: center top;
+    animation: slowParallax 25s linear infinite;
+  }
+  
+  @keyframes slowParallax {
+    0%   { background-position: center 0; }
+    50%  { background-position: center 8px; }
+    100% { background-position: center 0; }
+  }
+
+  .background {
+    animation: lanternGlow 6s ease-in-out infinite;
+  }
+  
+  @keyframes lanternGlow {
+    0%,100% { filter: brightness(1) saturate(1); }
+    50%     { filter: brightness(1.03) saturate(1.06); }
+  }
+
+  
+
+  .confetti-piece {
+    position: fixed;
+    top: -10px;
+    border-radius: 2px;
+    opacity: 0.9;
+    animation: fall 2s linear forwards;
+    z-index: 9999;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+    
+  
+
+
+
+
+
+

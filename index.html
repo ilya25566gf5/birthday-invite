@@ -387,5 +387,32 @@
       });
     });
   </script>  
+
+<script>
+  function launchConfetti() {
+      const colors = ["#ff3b3b", "#ffd93b", "#3bff7a", "#3bbdff", "#ff3bf5"];
+  
+      for (let i = 0; i < 120; i++) {
+          const confetti = document.createElement("div");
+          confetti.classList.add("confetti-piece");
+  
+          const size = Math.random() * 8 + 4;
+          const left = Math.random() * 100;
+          const rotate = Math.random() * 360;
+  
+          confetti.style.width = size + "px";
+          confetti.style.height = size * 0.4 + "px";
+          confetti.style.left = left + "vw";
+          confetti.style.transform = `rotate(${rotate}deg)`;
+          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+  
+          document.body.appendChild(confetti);
+  
+          setTimeout(() => confetti.remove(), 2000);
+      }
+  }
+  </script>
+
+
 </body>
 </html>
