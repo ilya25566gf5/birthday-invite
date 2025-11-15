@@ -1312,6 +1312,16 @@
   }
 
 
+
+  @media (max-width: 768px) {
+    .popup-choice { width: 100%; }
+    .popup-box .popup-inner {
+        width: 60%; }
+  }
+
+
+
+
   @media (max-width: 460px) {
     .popup-panda-bridge { top: 0px;}
   }
@@ -1319,3 +1329,6 @@
   @media (max-width: 375px) {
     .popup-choice { width: 100%; }
   }
+
+
+
