@@ -1319,7 +1319,7 @@
   @media (max-width: 768px) {
     .popup-choice { width: 100%; }
     .popup-box .popup-inner {
-        width: 60%; }
+        width: 100%; }
 
     .popup-box .popup-inner {
             justify-content: flex-start;
