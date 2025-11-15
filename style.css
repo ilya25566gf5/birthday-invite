@@ -1340,6 +1340,9 @@
         padding-left: 0px;
     }
 }
+@media (max-width: 768px) {
+     .popup-inner {width: 60%;}}
+
 
 @media (max-width: 375px) {
     .popup-box .popup-inner {
