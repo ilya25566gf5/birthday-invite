@@ -21,12 +21,17 @@
   /* телефоны */
   @media (max-width: 600px) {
     :root {
-      --popup-w: 340px;
+      --popup-w: 390px;
       --popup-h: 160px;
     }
   }
   
-
+  @media (max-width: 375px) {
+    :root {
+      --popup-w: 390px;
+      --popup-h: 160px;
+    }
+  }
 
 
   
