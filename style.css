@@ -1089,7 +1089,7 @@
   /* Бежевый прямоугольник-основа */
   .popup-box {
     position: relative;
-    width: min(820px, 94vw);              /* сужается на маленьких */
+    /* width: min(820px, 94vw);             */
     padding: 28px 32px 34px;
     box-sizing: border-box;
   }
