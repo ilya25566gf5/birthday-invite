@@ -3,12 +3,19 @@
     --page-padding: clamp(16px, 4vw, 40px);
   }
   
+  @font-face {
+    font-family: 'CutoffPro';
+    src: url('text/Cutoff-Pro.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
   /* общий ресет + шрифт */
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'CutoffPro', sans-serif !important;
+    font-family: 'CutoffPro'; /* ← применяем ко всему */
   }
   
   body {
