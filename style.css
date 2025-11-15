@@ -1317,6 +1317,12 @@
     .popup-choice { width: 100%; }
     .popup-box .popup-inner {
         width: 60%; }
+
+    .popup-box .popup-inner {
+            justify-content: flex-start;
+            padding-left: 20px;}
+
+
   }
 
 
