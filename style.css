@@ -1107,20 +1107,8 @@
     letter-spacing: 0.06em;
   }
   
-  /* Белая большая плашка внутри */
-  .popup-inner {
-    position: relative;
-    margin: 0 auto;
-    width: 100%;
-    background: rgba(255,255,255,0.97);
-    border-radius: 16px;
-    padding: 18px 30px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-  }
+
+
   
   /* Вариант для белой плашки-подписи (сообщение) */
   .popup-inner--message {
@@ -1148,15 +1136,6 @@
     text-align: center;
     cursor: pointer;
     font-size: clamp(18px, 2.1vw, 24px);
-  }
-  
-  /* Панда, "сидящая" на белой плашке */
-  .popup-panda-bridge {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -45%);
-    width: clamp(70px, 10vw, 110px);
   }
   
   /* Инпут "Кого?" во второй карточке */
@@ -1188,6 +1167,50 @@
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   }
+
+
+  /* ===== ФИКСЫ ПОПАПА ===== */
+
+/* весь текст в попапе делаем чёрным */
+.popup-box,
+.popup-box * {
+  color: #000;
+}
+
+/* белая длинная полоска внутри бежевой карточки */
+.popup-box .popup-inner {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px 32px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.22);
+  overflow: visible;                 /* чтобы панда не обрезалась */
+}
+
+/* да / нет — обычный чёрный текст */
+.popup-half {
+  color: #000;
+  font-weight: 400;
+}
+
+/* сообщение в третьем окне тоже чёрное */
+.popup-message {
+  color: #000;
+}
+
+/* кнопка ОК / Отправить — как белая плашка */
+.popup-ok {
+  background: #ffffff;
+  color: #000;
+}
+
+/* панда меньше и «сидит» на полоске, не обрезается */
+.popup-panda-bridge {
+  width: clamp(60px, 8vw, 90px);      /* уменьшаем */
+  top: 0;                             /* привязываем к верхнему краю полоски */
+  transform: translate(-50%, -35%);   /* чуть выше центра */
+  pointer-events: none;
+}
+
   
   .popup-ok:hover   { transform: translateY(-1px); }
   .popup-ok:active  { transform: translateY(1px); }

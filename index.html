@@ -224,108 +224,127 @@
   
     // 1) Да/нет по плюс-одному, с пандой
     function createPopup1() {
-      const { overlay, box } = createPopupBase();
-  
-      const title = document.createElement("h3");
-      title.textContent = ""; // можешь добавить текст при желании
-      box.appendChild(title);
-  
-      const choice = document.createElement("div");
-      choice.className = "popup-choice";
-  
-      const rYes = document.createElement("input");
-      rYes.type = "radio"; rYes.name = "plus1"; rYes.id = "p-yes";
-  
-      const rNo  = document.createElement("input");
-      rNo.type = "radio"; rNo.name = "plus1"; rNo.id = "p-no";
-  
-      const labYes = document.createElement("label");
-      labYes.className = "popup-half left";
-      labYes.htmlFor  = "p-yes";
-      labYes.textContent = "да";
-  
-      const labNo  = document.createElement("label");
-      labNo.className  = "popup-half right";
-      labNo.htmlFor    = "p-no";
-      labNo.textContent = "нет";
-  
-      const panda = document.createElement("img");
-      panda.src = "img/pand.png";
-      panda.className = "popup-panda-bridge";
-  
-      choice.append(rYes, rNo, labYes, labNo, panda);
-      box.appendChild(choice);
-  
-      // да → окно ввода имени
-      labYes.addEventListener("click", () => {
-        overlay.remove();
-        createPopup2();
-      });
-  
-      // нет → просто сохраняем, что плюс-одного нет
-      labNo.addEventListener("click", async () => {
-        overlay.remove();
-        try {
-          await updatePlusOne(lastRsvpId, false, null);
-        } catch (e) {
-          console.error(e);
-        }
-      });
+  const { overlay, box } = createPopupBase();
+
+  const title = document.createElement("h3");
+  title.textContent = "ХОТИТЕ КОГО-ТО ВЗЯТЬ С СОБОЙ?";
+  box.appendChild(title);
+
+  // ← создаём белую плашку
+  const inner = document.createElement("div");
+  inner.className = "popup-inner";
+  box.appendChild(inner);
+
+  const choice = document.createElement("div");
+  choice.className = "popup-choice";
+
+  // radio и подписи
+  const rYes = document.createElement("input");
+  rYes.type = "radio";
+  rYes.name = "plus1";
+  rYes.id = "p-yes";
+
+  const rNo  = document.createElement("input");
+  rNo.type = "radio";
+  rNo.name = "plus1";
+  rNo.id = "p-no";
+
+  const labYes = document.createElement("label");
+  labYes.className = "popup-half left";
+  labYes.htmlFor  = "p-yes";
+  labYes.textContent = "да";
+
+  const labNo  = document.createElement("label");
+  labNo.className  = "popup-half right";
+  labNo.htmlFor    = "p-no";
+  labNo.textContent = "нет";
+
+  const panda = document.createElement("img");
+  panda.src = "img/pand.png";
+  panda.className = "popup-panda-bridge";
+
+  choice.append(rYes, rNo, labYes, labNo, panda);
+  inner.appendChild(choice);   // ВНУТРЬ белой плашки
+
+  // обработчики, как у тебя
+  labYes.addEventListener("click", () => {
+    overlay.remove();
+    createPopup2();
+  });
+
+  labNo.addEventListener("click", async () => {
+    overlay.remove();
+    try {
+      await updatePlusOne(lastRsvpId, false, null);
+    } catch (e) {
+      console.error(e);
     }
+  });
+}
+
   
-    // 2) Ввод "кого?" и отправка
-    function createPopup2() {
-      const { overlay, box } = createPopupBase();
-  
-      const title = document.createElement("h3");
-      title.textContent = ""; // можно добавить надпись
-      box.appendChild(title);
-  
-      const input = document.createElement("input");
-      input.type = "text";
-      input.placeholder = "Кого?";
-      input.className = "popup-input";
-      box.appendChild(input);
-  
-      const okBtn = document.createElement("button");
-      okBtn.textContent = "Отправить";
-      okBtn.className = "popup-ok";
-      box.appendChild(okBtn);
-  
-      okBtn.addEventListener("click", async () => {
-        const who = input.value.trim() || null;
-        overlay.remove();
-  
-        try {
-          await updatePlusOne(lastRsvpId, true, who);
-        } catch (e) {
-          console.error(e);
-        }
-  
-        createPopup3("заявка находится на рассмотрении у Си Цзиньпина");
-      });
+function createPopup2() {
+  const { overlay, box } = createPopupBase();
+
+  const title = document.createElement("h3");
+  title.textContent = "ХОТИТЕ КОГО-ТО ВЗЯТЬ С СОБОЙ?";
+  box.appendChild(title);
+
+  const inner = document.createElement("div");
+  inner.className = "popup-inner";
+  box.appendChild(inner);
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "кого?";
+  input.className = "popup-input";
+  inner.appendChild(input);
+
+  const okBtn = document.createElement("button");
+  okBtn.textContent = "Отправить";
+  okBtn.className = "popup-ok";
+  box.appendChild(okBtn);
+
+  okBtn.addEventListener("click", async () => {
+    const who = input.value.trim() || null;
+    overlay.remove();
+
+    try {
+      await updatePlusOne(lastRsvpId, true, who);
+    } catch (e) {
+      console.error(e);
     }
+
+    createPopup3("заявка находится на рассмотрении у  Си Цзиньпина");
+  });
+}
+
   
     // 3) Финальное сообщение
     function createPopup3(message) {
-      const { overlay, box } = createPopupBase();
-  
-      const title = document.createElement("h3");
-      title.textContent = "";
-      box.appendChild(title);
-  
-      const text = document.createElement("p");
-      text.className = "popup-message";
-      text.textContent = message;
-      box.appendChild(text);
-  
-      const ok = document.createElement("button");
-      ok.className = "popup-ok";
-      ok.textContent = "OK";
-      box.appendChild(ok);
-  
-      ok.addEventListener("click", () => overlay.remove());
-    }
+  const { overlay, box } = createPopupBase();
+
+  const title = document.createElement("h3");
+  title.textContent = "ХОТИТЕ КОГО-ТО ВЗЯТЬ С СОБОЙ?";
+  box.appendChild(title);
+
+  const inner = document.createElement("div");
+  inner.className = "popup-inner popup-inner--message";
+  box.appendChild(inner);
+
+  const text = document.createElement("p");
+  text.className = "popup-message";
+  text.textContent = message;
+  inner.appendChild(text);
+
+  const ok = document.createElement("button");
+  ok.className = "popup-ok";
+  ok.textContent = "OK";
+  box.appendChild(ok);
+
+  ok.addEventListener("click", () => overlay.remove());
+}
+
   
     // ===== Всё инициализируем, когда DOM готов =====
     document.addEventListener("DOMContentLoaded", () => {
@@ -430,6 +449,8 @@
 }
 
   </script>
+
+
 
 
 </body>
