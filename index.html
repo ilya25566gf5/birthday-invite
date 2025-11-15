@@ -351,9 +351,11 @@
   
         // Потом уже показываем попапы / логику по да/нет
         const selected = form.querySelector('input[name="go"]:checked')?.value;
-        if (selected === "yes") {
-          showPopupSequence();
-        }
+  if (selected === "yes") {
+    launchConfetti();      // 🎉 запускаем конфетти
+    showPopupSequence();   // затем показываем попапы
+  }
+
         if (selected === "no") {
           // На всякий случай удаляем попап, если вдруг есть
           const ov = document.querySelector('.popup-overlay');
