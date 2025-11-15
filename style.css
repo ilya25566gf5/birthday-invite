@@ -1287,7 +1287,7 @@
   /* Адаптация на очень маленьких экранах */
   @media (max-width: 480px) {
     .popup-box {
-        padding: 50px 18px 26px;
+        padding: 40px 18px 10px;
     }
   
     .popup-inner {
