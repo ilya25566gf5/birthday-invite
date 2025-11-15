@@ -1303,6 +1303,9 @@
       transform: translate(-50%, -40%);
       width: 80px;
     }
+
+    .popup-input {
+        padding: 10px; }
   }
   
   
